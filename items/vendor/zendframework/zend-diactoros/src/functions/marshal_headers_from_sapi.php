@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace Zend\Diactoros;
 
 use function array_key_exists;
-use function is_string;
 use function strpos;
 use function strtolower;
 use function strtr;
@@ -24,14 +23,6 @@ function marshalHeadersFromSapi(array $server) : array
 {
     $headers = [];
     foreach ($server as $key => $value) {
-        if (! is_string($key)) {
-            continue;
-        }
-
-        if ($value === '') {
-            continue;
-        }
-
         // Apache prefixes environment variables with REDIRECT_
         // if they are added by rewrite rules
         if (strpos($key, 'REDIRECT_') === 0) {
@@ -44,6 +35,10 @@ function marshalHeadersFromSapi(array $server) : array
             }
         }
 
+        if ($value === '') {
+            continue;
+        }
+
         if (strpos($key, 'HTTP_') === 0) {
             $name = strtr(strtolower(substr($key, 5)), '_', '-');
             $headers[$name] = $value;
@@ -51,7 +46,7 @@ function marshalHeadersFromSapi(array $server) : array
         }
 
         if (strpos($key, 'CONTENT_') === 0) {
-            $name = strtr(strtolower($key), '_', '-');
+            $name = 'content-' . strtolower(substr($key, 8));
             $headers[$name] = $value;
             continue;
         }

@@ -6,4 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Thrift\\' => array($vendorDir . '/packaged/thrift/src'),
+    'Thrift' => array($vendorDir . '/apache/thrift/lib/php/lib'),
+    'Prophecy\\' => array($vendorDir . '/phpspec/prophecy/src'),
 );

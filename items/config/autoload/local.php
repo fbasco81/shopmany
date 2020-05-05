@@ -15,4 +15,17 @@ return [
         "user" => "root",
         "pass" => "root",
     ],
+    "opentracing-jaeger-exporter" => [
+        "options" => [
+            'sampler' => [
+                'type' => \Jaeger\SAMPLER_TYPE_CONST,
+                'param' => true,
+            ],
+            'logging' => true,
+            'local_agent' => [
+                'reporting_host' => 'jaeger',
+            ],
+        ],
+        "service_name" => 'item',
+    ],
 ];

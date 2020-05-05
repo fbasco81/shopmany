@@ -53,7 +53,7 @@ use SebastianBergmann\ObjectEnumerator\Enumerator;
 use Text_Template;
 use Throwable;
 
-abstract class TestCase extends Assert implements SelfDescribing, Test
+abstract class TestCase extends Assert implements Test, SelfDescribing
 {
     private const LOCALE_CATEGORIES = [\LC_ALL, \LC_COLLATE, \LC_CTYPE, \LC_MONETARY, \LC_NUMERIC, \LC_TIME];
 
@@ -118,12 +118,12 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     private $expectedException;
 
     /**
-     * @var null|string
+     * @var string
      */
     private $expectedExceptionMessage;
 
     /**
-     * @var null|string
+     * @var string
      */
     private $expectedExceptionMessageRegExp;
 
@@ -569,12 +569,12 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
         return $this->expectedExceptionCode;
     }
 
-    public function getExpectedExceptionMessage(): ?string
+    public function getExpectedExceptionMessage(): string
     {
         return $this->expectedExceptionMessage;
     }
 
-    public function getExpectedExceptionMessageRegExp(): ?string
+    public function getExpectedExceptionMessageRegExp(): string
     {
         return $this->expectedExceptionMessageRegExp;
     }
@@ -916,7 +916,6 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
         $this->unregisterCustomComparators();
         $this->cleanupIniSettings();
         $this->cleanupLocaleSettings();
-        \libxml_clear_errors();
 
         // Perform assertion on output.
         if (!isset($e)) {
@@ -1662,15 +1661,21 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
         if ($this->prophet !== null) {
             try {
                 $this->prophet->checkPredictions();
-            } finally {
-                foreach ($this->prophet->getProphecies() as $objectProphecy) {
-                    foreach ($objectProphecy->getMethodProphecies() as $methodProphecies) {
-                        /** @var MethodProphecy[] $methodProphecies */
-                        foreach ($methodProphecies as $methodProphecy) {
-                            $this->numAssertions += \count($methodProphecy->getCheckedPredictions());
-                        }
+            } catch (Throwable $t) {
+                /* Intentionally left empty */
+            }
+
+            foreach ($this->prophet->getProphecies() as $objectProphecy) {
+                foreach ($objectProphecy->getMethodProphecies() as $methodProphecies) {
+                    /** @var MethodProphecy[] $methodProphecies */
+                    foreach ($methodProphecies as $methodProphecy) {
+                        $this->numAssertions += \count($methodProphecy->getCheckedPredictions());
                     }
                 }
+            }
+
+            if (isset($t)) {
+                throw $t;
             }
         }
     }

@@ -10,8 +10,6 @@ namespace Zend\ComponentInstaller\Injector;
 use Zend\ComponentInstaller\Collection;
 use Zend\ComponentInstaller\ConfigDiscovery\DiscoveryChainInterface;
 
-use function in_array;
-
 class ConfigInjectorChain implements InjectorInterface
 {
     /**

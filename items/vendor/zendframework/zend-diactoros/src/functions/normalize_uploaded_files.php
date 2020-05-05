@@ -49,8 +49,8 @@ function normalizeUploadedFiles(array $files) : array
                     $tmpNameTree[$key],
                     $sizeTree[$key],
                     $errorTree[$key],
-                    $nameTree[$key] ?? null,
-                    $typeTree[$key] ?? null
+                    isset($nameTree[$key]) ? $nameTree[$key] : null,
+                    isset($typeTree[$key]) ? $typeTree[$key] : null
                 );
                 continue;
             }
@@ -58,8 +58,8 @@ function normalizeUploadedFiles(array $files) : array
                 'tmp_name' => $tmpNameTree[$key],
                 'size' => $sizeTree[$key],
                 'error' => $errorTree[$key],
-                'name' => $nameTree[$key] ?? null,
-                'type' => $typeTree[$key] ?? null,
+                'name' => isset($nameTree[$key]) ? $nameTree[$key] : null,
+                'type' => isset($typeTree[$key]) ? $typeTree[$key] : null
             ]);
         }
         return $normalized;
@@ -96,8 +96,8 @@ function normalizeUploadedFiles(array $files) : array
             $files['tmp_name'],
             $files['size'],
             $files['error'],
-            $files['name'] ?? null,
-            $files['type'] ?? null
+            isset($files['name']) ? $files['name'] : null,
+            isset($files['type']) ? $files['type'] : null
         );
     };
 

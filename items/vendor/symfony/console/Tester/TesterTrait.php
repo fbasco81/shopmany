@@ -29,14 +29,12 @@ trait TesterTrait
     /**
      * Gets the display returned by the last execution of the command or application.
      *
+     * @param bool $normalize Whether to normalize end of lines to \n or not
+     *
      * @return string The display
      */
-    public function getDisplay(bool $normalize = false)
+    public function getDisplay($normalize = false)
     {
-        if (null === $this->output) {
-            throw new \RuntimeException('Output not initialized, did you execute the command before requesting the display?');
-        }
-
         rewind($this->output->getStream());
 
         $display = stream_get_contents($this->output->getStream());
@@ -55,7 +53,7 @@ trait TesterTrait
      *
      * @return string
      */
-    public function getErrorOutput(bool $normalize = false)
+    public function getErrorOutput($normalize = false)
     {
         if (!$this->captureStreamsIndependently) {
             throw new \LogicException('The error output is not available when the tester is run without "capture_stderr_separately" option set.');
@@ -108,7 +106,7 @@ trait TesterTrait
      * @param array $inputs An array of strings representing each input
      *                      passed to the command input stream
      *
-     * @return $this
+     * @return self
      */
     public function setInputs(array $inputs)
     {
@@ -160,9 +158,6 @@ trait TesterTrait
         }
     }
 
-    /**
-     * @return resource
-     */
     private static function createStream(array $inputs)
     {
         $stream = fopen('php://memory', 'r+', false);

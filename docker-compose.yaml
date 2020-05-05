@@ -1,110 +1,209 @@
 version: '3.3'
 
 services:
-  # item is the service that lists the available items with their price.
-  item:
-    restart: always
-    build:
-      context: ./items
-    ports:
-      - '3001:80'
-    volumes:
-      - ./items:/var/www/html
-    depends_on:
-      - itemdb
-    networks:
-      - gaworkshop
-      - shopmany
-  itemdb:
-    image: mysql:5.7.25
-    restart: always
-    environment:
-      MYSQL_DATABASE: 'shopmany'
-      MYSQL_USER: 'hello'
-      MYSQL_PASSWORD: 'ciao'
-      MYSQL_ROOT_PASSWORD: 'root'
-    expose:
-      - '3306'
-    volumes:
-      - ./items/db.sql:/docker-entrypoint-initdb.d/dump.sql
-    networks:
-      - gaworkshop
-      - shopmany
+    # item is the service that lists the available items with their price.
+    item:
+        restart: always
+        build:
+            context: ./items
+        ports:
+            - '3001:80'
+        volumes:
+            - ./items:/var/www/html
+        depends_on:
+            - itemdb
+        networks:
+            - gaworkshop
+            - trace-example-network
+    itemdb:
+        image: mysql:5.7.25
+        restart: always
+        environment:
+            MYSQL_DATABASE: 'shopmany'
+            MYSQL_USER: 'hello'
+            MYSQL_PASSWORD: 'ciao'
+            MYSQL_ROOT_PASSWORD: 'root'
+        expose:
+            - '3306'
+        volumes:
+            - ./items/db.sql:/docker-entrypoint-initdb.d/dump.sql
+        networks:
+            - gaworkshop
+            - trace-example-network
 
-  # it manages the discouts available for every item.
-  discount:
-    image: node:10.15.3-stretch
-    working_dir: /usr/src/app
-    volumes:
-      - ./discount:/usr/src/app
-    command: ["node", "./server.js"]
-    ports:
-      - '3003:3000'
-    depends_on:
-      - discountdb
-    networks:
-      - gaworkshop
-      - shopmany
+    # it manages the discouts available for every item.
+    discount:
+        image: node:10.15.3-stretch
+        working_dir: /usr/src/app
+        volumes:
+            - ./discount:/usr/src/app
+        command: ['node', './server.js']
+        ports:
+            - '3003:3000'
+        depends_on:
+            - discountdb
+        networks:
+            - gaworkshop
+            - trace-example-network
 
-  discountdb:
-    image: mongo:4.0.6-xenial
-    restart: always
-    environment:
-      MONGO_INITDB_DATABASE: "shopmany"
-    ports:
-      - '27017:27017'
-    volumes:
-      - ./discount/init:/docker-entrypoint-initdb.d
-    networks:
-      - gaworkshop
-      - shopmany
+    discountdb:
+        image: mongo:4.0.6-xenial
+        restart: always
+        environment:
+            MONGO_INITDB_DATABASE: 'shopmany'
+        ports:
+            - '27017:27017'
+        volumes:
+            - ./discount/init:/docker-entrypoint-initdb.d
+        networks:
+            - gaworkshop
+            - trace-example-network
 
-  # pay is a java app that handles items purchase
-  pay:
-    build:
-      context: ./pay
-    ports:
-      - '3002:8080'
-    networks:
-      - gaworkshop
-      - shopmany
-    depends_on:
-      - paydb
+    # pay is a java app that handles items purchase
+    pay:
+        build:
+            context: ./pay
+        ports:
+            - '3002:8080'
+        networks:
+            - gaworkshop
+            - trace-example-network
+        depends_on:
+            - paydb
 
-  paydb:
-    image: mysql:5.7.25
-    restart: always
-    environment:
-      MYSQL_DATABASE: 'pay'
-      MYSQL_USER: 'howdy'
-      MYSQL_PASSWORD: 'hellohello'
-      MYSQL_ROOT_PASSWORD: 'root'
-    expose:
-      - '3306'
-    volumes:
-      - ./pay/src/main/resources/schema.sql:/docker-entrypoint-initdb.d/schema.sql
-    networks:
-      - gaworkshop
-      - shopmany
+    paydb:
+        image: mysql:5.7.25
+        restart: always
+        environment:
+            MYSQL_DATABASE: 'pay'
+            MYSQL_USER: 'howdy'
+            MYSQL_PASSWORD: 'hellohello'
+            MYSQL_ROOT_PASSWORD: 'root'
+        expose:
+            - '3306'
+        volumes:
+            - ./pay/src/main/resources/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+        networks:
+            - gaworkshop
+            - trace-example-network
 
-  # frontend is the ui of the project
-  frontend:
-    image: golang:1.14.0-stretch
-    command: ["go", "run", "-mod", "vendor", "./main.go"]
-    ports:
-      - '3000:3000'
-    volumes:
-      - "./frontend:/opt/app"
-    working_dir: "/opt/app"
-    depends_on:
-      - item
-      - pay
-      - discount
-    networks:
-      - gaworkshop
-      - shopmany
+    # frontend is the ui of the project
+    frontend:
+        image: golang:1.14.0-stretch
+        command: ['go', 'run', '-mod', 'vendor', './main.go']
+        # '--tracer',
+        # 'jaeger',
+        # '--tracer-jaeger-address',
+        # 'http://jaeger:14268/api/traces',
+        ports:
+            - '3000:3000'
+        volumes:
+            - './frontend:/opt/app'
+        # OpenTelemetry
+        environment:
+            JAEGER_SERVICE_NAME: frontend
+            JAEGER_ENDPOINT: 'http://jaeger:14268/api/traces'
+            JAEGER_REPORTER_FLUSH_INTERVAL: 500ms
+        working_dir: '/opt/app'
+        depends_on:
+            - item
+            - pay
+            - discount
+            - account
+        networks:
+            - gaworkshop
+            - trace-example-network
 
+    account:
+        image: 'account:latest'
+        ports:
+            - '32773:80'
+        build:
+            context: ./account
+            dockerfile: TracingDotNetCore/Dockerfile
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            # valid options for TracingOptions__TracerTarget : datadog , jaeger
+            # if you chhose jaeger, you must set DD_TRACE_ENABLED=true, or even better CORECLR_ENABLE_PROFILING=0 to disable datadog auto tracing (APM)
+            # automatic tracing will be sent to datadog
+            - TracingOptions__TracerTarget=jaeger
+            #read for jaeger only. for dd we leverge apm using DD_TRACE_ENABLED=true
+            - TracingOptions__EnableOpenTracingAutoTracing=true
+
+            # jaeger
+            - JAEGER_SERVICE_NAME=account
+            - JAEGER_AGENT_HOST=jaeger
+            - JAEGER_AGENT_PORT=6831
+            - JAEGER_SAMPLER_TYPE=const
+            - JAEGER_SAMPLER_PARAM=1
+            - JAEGER_REPORTER_LOG_SPANS=true
+
+            #datadog
+            # system env variables (required to activate any profiler)
+            # the id of the datadog profiler, required for APM (Automatic tracing)
+            # comment from here----------------
+            # - CORECLR_PROFILER={846F5F1C-F9AE-4B07-969E-05C26BC060D8}
+            # # the path of the datadog profiler, required for APM (Automatic tracing)
+            # - CORECLR_PROFILER_PATH_64=/opt/datadog/Datadog.Trace.ClrProfiler.Native.so
+            # #enable the profiler
+            # - CORECLR_ENABLE_PROFILING=1
+            # # datadog specific env vars
+            # # enable datadog profiler
+            # - DD_TRACE_ENABLED=true
+            # - DD_INTEGRATIONS=/opt/datadog/integrations.json
+            # - DD_DOTNET_TRACER_HOME=/opt/datadog
+            # - DD_TRACE_ANALYTICS_ENABLED=true
+            # # inject traceid in the the logs, for correlation
+            # - DD_LOGS_INJECTION=true
+            # - DD_INTEGRATIONS_ENABLED=true
+            # # enable logs for profiler / dd tracer. REMOVE IN PRD
+            # - DD_TRACE_DEBUG=true
+            # # the name of the agent to send traces
+            # - DD_AGENT_HOST=datadog
+            # # properties to tag traces
+            # - DD_ENV=playground
+            # - DD_SERVICE_NAME=TracingDotNetCore
+
+        networks:
+            - trace-example-network
+        depends_on:
+            - jaeger
+            # - datadog
+
+    jaeger:
+        image: 'jaegertracing/all-in-one:latest'
+        command: --log-level=debug
+        expose:
+            - '5775/udp'
+            - '6831/udp'
+            - '6832/udp'
+            - '5778'
+            - '14268'
+            - '9411'
+        ports:
+            #to expose the jeager ui
+            - '16686:16686'
+        environment:
+            - 'COLLECTOR_ZIPKIN_HTTP_PORT=9411'
+        networks:
+            - trace-example-network
+    # datadog:
+    #     image: datadog/agent:7
+    #     networks:
+    #         - trace-example-network
+    #     environment:
+    #         - DD_API_KEY=<...>
+    #         # listen to apm traces send by APM
+    #         - DD_APM_ENABLED=true
+    #         # accept APM traces from other running hosts / containers
+    #         - DD_APM_NON_LOCAL_TRAFFIC=true
+    #           # enable logs for agent. REMOVE IN PRD
+    #         - DD_LOG_LEVEL=debug
+    #     volumes:
+    #         - /var/run/docker.sock:/var/run/docker.sock
+    #         - /proc/:/host/proc/:ro
+    #         - /sys/fs/cgroup:/host/sys/fs/cgroup:ro
 networks:
-  shopmany:
-  gaworkshop:
-    external: true
+    trace-example-network:
+    gaworkshop:
+        external: true

@@ -1,29 +1,25 @@
-`shopmay` is a sort of ecommerce made of a bunch of services written using
-different languages. I wrote it as codebase for an "Observability workshop". So
-the idea is to learn about how to instrument applications because as every
-developer know it is hard to understand what is going on in production.
+This repository is a collection of sample app that represents an e-commerce site.
 
 # Getting Started
 
 ```
-docker network create gaworkshop
 docker-compose up frontend
 ```
 
 Started all the services involved, you can point your browser to
 `http://localhost:3000` to see a fancy UI. It is a single-page ecommerce. You
-can see the list of items available, if there is a discount and you can populare
+can see the list of items available, if there is a discount and you can populate
 and buy a carts.
 
-# Per Service zoom
+# Services
 
 The overall architecture looks like this one. The frontend serves an HTTP
 application that uses Jquery as JS Framework. It also serves a set of JSON API.
 Those APIs are a proxy to the other services part of `shopmany`.
 
-* Item
-* Discount
-* Pay
+-   Item
+-   Discount
+-   Pay
 
 ```
 +------------------+
@@ -53,9 +49,12 @@ Those APIs are a proxy to the other services part of `shopmany`.
                              +-------------------+
 ```
 
+Additionally, the front end consumes a .net core API which provide the user account information, accessing directly to the API and not using any proxy layer.
+
 This chapter is a per service zoom on the architecture
 
 ## Items
+
 It is a service contained in the subdirectory `./items`. It is written in PHP
 using Expressive 3 as framework.
 It contains and manage the items that you can buy from `shopmany`. MySQL is used
@@ -76,8 +75,14 @@ $ curl http://localhost:3001/item
 ```
 
 ## Discount
+
 Discount uses mongodn as backend and it is an application in NodeJS capable of
 giving back the discount % that should be applied to a specific item.
+
+Prior to run compose, get the dependencies
+```
+npm install
+```
 
 ```bash
 docker-compose up discount
@@ -91,6 +96,7 @@ $ curl http://localhost:3003/discount?itemid=1
 ```
 
 ## pay
+
 Pay is a java service that manages the purchase of a set of items from a
 specific customer. It uses SpringBoot as framework and MySQL as backend
 (probably).
@@ -100,8 +106,24 @@ docker-compose up pay
 ```
 
 Check it out
+
 ```
 $ curl http://localhost:3002/pays
+[]
+```
+
+## Account
+
+Account is a .net Core 3 service that provide randomly choosen user information taken fron https://api.namefake.com
+
+```
+docker-compose up account
+```
+
+Check it out
+
+```
+$ curl http://localhost:32773/account
 []
 ```
 
@@ -116,4 +138,7 @@ docker-compose up frontend
 ```
 
 Check it out `http://localhost:3000` using your browser
+
+```
+
 ```

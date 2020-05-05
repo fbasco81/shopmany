@@ -1110,18 +1110,11 @@ class MockObjectTest extends TestCase
         $this->assertInstanceOf(stdClass::class, $stub->methodWithObjectReturnTypeDeclaration());
     }
 
-    public function testTraitCanBeDoubled(): void
+    public function testGetObjectForTrait(): void
     {
         $object = $this->getObjectForTrait(ExampleTrait::class);
 
         $this->assertSame('ohHai', $object->ohHai());
-    }
-
-    public function testTraitWithConstructorCanBeDoubled(): void
-    {
-        $object = $this->getObjectForTrait(TraitWithConstructor::class, ['value']);
-
-        $this->assertSame('value', $object->value());
     }
 
     private function resetMockObjects(): void

@@ -7,9 +7,6 @@
 
 namespace Zend\ComponentInstaller\ConfigDiscovery;
 
-use function preg_quote;
-use function sprintf;
-
 class ExpressiveConfig extends AbstractDiscovery
 {
     /**

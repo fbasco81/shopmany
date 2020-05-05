@@ -14,15 +14,10 @@ use Zend\Stdlib\ArrayUtils\MergeRemoveKey;
 use Zend\Stdlib\ArrayUtils\MergeReplaceKeyInterface;
 
 use function array_key_exists;
-use function chmod;
 use function class_exists;
 use function date;
-use function fclose;
 use function file_exists;
-use function flock;
-use function fopen;
-use function fputs;
-use function ftruncate;
+use function file_put_contents;
 use function get_class;
 use function gettype;
 use function is_array;
@@ -39,8 +34,6 @@ use function var_export;
 class ConfigAggregator
 {
     const ENABLE_CACHE = 'config_cache_enabled';
-
-    const CACHE_FILEMODE = 'config_cache_filemode';
 
     const CACHE_TEMPLATE = <<< 'EOT'
 <?php
@@ -260,7 +253,6 @@ EOT;
      *
      * @param array $config
      * @param null|string $cachedConfigFile
-     * @param int $mode
      */
     private function cacheConfig(array $config, $cachedConfigFile)
     {
@@ -272,35 +264,12 @@ EOT;
             return;
         }
 
-        $mode = isset($config[self::CACHE_FILEMODE]) ? $config[self::CACHE_FILEMODE] : null;
-        $tempFile = sys_get_temp_dir() . '/' . basename($cachedConfigFile) . '.tmp';
-
-        $fh = fopen($tempFile, 'c');
-        if (! $fh) {
-            return;
-        }
-        if (! flock($fh, LOCK_EX | LOCK_NB)) {
-            fclose($fh);
-            return;
-        }
-
-        if ($mode !== null) {
-            chmod($tempFile, $mode);
-        }
-
-        ftruncate($fh, 0);
-
-        fputs($fh, sprintf(
+        file_put_contents($cachedConfigFile, sprintf(
             self::CACHE_TEMPLATE,
             get_class($this),
             date('c'),
             var_export($config, true)
         ));
-
-        rename($tempFile, $cachedConfigFile);
-
-        flock($fh, LOCK_UN);
-        fclose($fh);
     }
 
     /**

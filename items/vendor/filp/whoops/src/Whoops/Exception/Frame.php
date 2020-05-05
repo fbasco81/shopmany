@@ -119,11 +119,7 @@ class Frame implements Serializable
                 return null;
             }
 
-            try {
-                $this->fileContentsCache = file_get_contents($filePath);
-            } catch (ErrorException $exception) {
-                // Internal file paths of PHP extensions cannot be opened
-            }
+            $this->fileContentsCache = file_get_contents($filePath);
         }
 
         return $this->fileContentsCache;
@@ -191,7 +187,7 @@ class Frame implements Serializable
      *     $frame->getFileLines(); // => array( 0 => '<?php', 1 => '...', ...)
      * @example
      *     Get one line for this file, starting at line 10 (zero-indexed, remember!)
-     *     $frame->getFileLines(9, 1); // array( 9 => '...' )
+     *     $frame->getFileLines(9, 1); // array( 10 => '...', 11 => '...')
      *
      * @throws InvalidArgumentException if $length is less than or equal to 0
      * @param  int                      $start

@@ -2,53 +2,6 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 1.3.0 - 2019-11-22
-
-### Added
-
-- [#96](https://github.com/zendframework/zend-expressive-tooling/pull/96) adds
-  compatibility with symfony/console `^5.0`.
-
-### Changed
-
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
-
-### Fixed
-
-- Nothing.
-
-## 1.2.1 - 2019-08-28
-
-### Added
-
-- Nothing.
-
-### Changed
-
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
-
-### Fixed
-
-- [#93](https://github.com/zendframework/zend-expressive-tooling/pull/93) fixes
-  issue with DI containers where configuration is an ArrayObject not an array.
-  `handler:create` command works now properly with `Aura.Di` and `Symfony DI` containers.
-
 ## 1.2.0 - 2019-03-05
 
 ### Added
