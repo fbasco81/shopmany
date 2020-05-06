@@ -1,0 +1,11 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/wharehouse/consumer/bin/Debug/netcoreapp3.1
+/wharehouse/consumer/obj
+/wharehouse/.vs/wharehouse/DesignTimeBuild
+/wharehouse/.vs/wharehouse/v16
+/wharehouse/.vs/wharehouse/config
+/wharehouse/producer/bin/Debug/netcoreapp3.1
+/wharehouse/producer/obj

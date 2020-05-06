@@ -1,0 +1,61 @@
+version: '3.3'
+
+services:
+    wharehouse-producer:
+        image: 'producer:latest'
+        build:
+            context: .
+            dockerfile: producer/Dockerfile
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            # jaeger
+            - JAEGER_SERVICE_NAME=TracingDotNetCore
+            - JAEGER_AGENT_HOST=jaeger
+            - JAEGER_AGENT_PORT=6831
+            - JAEGER_SAMPLER_TYPE=const
+            - JAEGER_SAMPLER_PARAM=1
+            - JAEGER_REPORTER_LOG_SPANS=true
+        restart: on-failure
+        depends_on:
+            - rabbitmq
+        networks:
+            - wharehouse-network
+
+    wharehouse-consumer:
+        image: 'consumer:latest'
+        build:
+            context: .
+            dockerfile: consumer/Dockerfile
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            # jaeger
+            - JAEGER_SERVICE_NAME=TracingDotNetCore
+            - JAEGER_AGENT_HOST=jaeger
+            - JAEGER_AGENT_PORT=6831
+            - JAEGER_SAMPLER_TYPE=const
+            - JAEGER_SAMPLER_PARAM=1
+            - JAEGER_REPORTER_LOG_SPANS=true
+        restart: on-failure
+        depends_on:
+            - rabbitmq
+        networks:
+            - wharehouse-network
+   
+    rabbitmq:
+        image: 'rabbitmq:3-management'
+        expose:
+          - 5672
+          - 15672
+        ports:
+            - '5672:5672'
+            - '15672:15672'
+        networks:
+            - wharehouse-network
+        healthcheck:
+          test: [ "CMD", "nc", "-z", "localhost", "5672" ]
+          interval: 10s
+          timeout: 15s
+          retries: 10
+    
+networks:
+    wharehouse-network:
