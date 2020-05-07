@@ -1,7 +1,14 @@
 {
   "profiles": {
     "producer": {
-      "commandName": "Project"
+      "commandName": "Project",
+      "environmentVariables": {
+        "RABBIT_HOST": "localhost",
+        "JAEGER_SERVICE_NAME": "wharehouse.producer",
+        "JAEGER_AGENT_HOST": "localhost",
+        "JAEGER_AGENT_PORT": "6831",
+        "JAEGER_SAMPLER_TYPE": "const"
+      }
     },
     "Docker": {
       "commandName": "Docker"

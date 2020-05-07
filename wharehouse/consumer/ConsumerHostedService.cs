@@ -10,6 +10,9 @@ using OpenTracing;
 using User.Activation.Consumer.Common;
 using Newtonsoft.Json;
 using consumer;
+using System.Net.Http;
+using System.Collections.Generic;
+using System.Linq;
 
 public class ConsumerHostedService : BackgroundService
 {
@@ -17,11 +20,13 @@ public class ConsumerHostedService : BackgroundService
   private IConnection _connection;
   private IModel _channel;
   private readonly ITracer _tracer;
+  private readonly IHttpClientFactory _clientFactory;
 
-  public ConsumerHostedService(ILogger<ConsumerHostedService> logger, ITracer tracer)
+  public ConsumerHostedService(ILogger<ConsumerHostedService> logger, ITracer tracer, IHttpClientFactory clientFactory)
   {
     _logger = logger;
     _tracer = tracer;
+    _clientFactory = clientFactory;
     InitRabbitMQ();
   }
 
@@ -29,7 +34,7 @@ public class ConsumerHostedService : BackgroundService
   {
     _logger.LogInformation("ConsumerHostedService is connecting to rabbit mq.");
 
-    var factory = new ConnectionFactory() { HostName = "localhost" };
+    var factory = new ConnectionFactory() { HostName = Environment.GetEnvironmentVariable("RABBIT_HOST") };
     _connection = factory.CreateConnection();
     // create channel  
     _channel = _connection.CreateModel();
@@ -48,16 +53,44 @@ public class ConsumerHostedService : BackgroundService
     stoppingToken.ThrowIfCancellationRequested();
 
     var consumer = new EventingBasicConsumer(_channel);
-    consumer.Received += (ch, ea) =>
+    consumer.Received += async (ch, ea) =>
     {
       var body = ea.Body;
       var message = Encoding.UTF8.GetString(body.ToArray());
-      var item = System.Text.Json.JsonSerializer.Deserialize<Item>(message);
-      using (var scope = TracingExtension.StartServerSpan(_tracer, item.TraceKeys, "user-activation-link-sender-consumer"))
+      var item = System.Text.Json.JsonSerializer.Deserialize<WharehouseItem>(message);
+      using (var scope = TracingExtension.StartServerSpan(_tracer, item.TraceKeys, "item-sold-ack"))
       {
         //some user activation link send business logics
+        var itemUrl = Environment.GetEnvironmentVariable("ITEMS_URL");
+        if (string.IsNullOrEmpty(itemUrl))
+        {
+          Console.WriteLine(" [x] {0} received, nothing to do", item);
+          return;
+        }
 
-        Console.WriteLine(" [x] Received {0}", message);
+        var request = new HttpRequestMessage(HttpMethod.Get,
+           Environment.GetEnvironmentVariable("ITEMS_URL"));
+        //request.Headers.Add("Content-Type", "application/json");
+
+        var client = _clientFactory.CreateClient();
+
+        var response = await client.SendAsync(request);
+
+        if (response.IsSuccessStatusCode)
+        {
+          using var responseStream = await response.Content.ReadAsStreamAsync();
+          var shopItemContainer = await System.Text.Json.JsonSerializer.DeserializeAsync<ShopItemContainer>(responseStream);
+          
+          var shopItem = shopItemContainer.items.FirstOrDefault(x => x.id == item.ItemId);
+          Console.WriteLine(" [x] {0} removed from stock", shopItem.name);
+
+        }
+        else
+        {
+          Console.WriteLine(" [x] Error getting items from store");
+
+        }
+
       }
 
       

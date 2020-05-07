@@ -4,7 +4,7 @@ using System.Text;
 
 namespace consumer
 {
-	public class Item
+	public class WharehouseItem
 	{
 		public int ItemId { get; set; }
 		public Dictionary<string , string> TraceKeys { get; set; }

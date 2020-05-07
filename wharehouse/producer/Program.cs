@@ -21,10 +21,10 @@ namespace producer
 						services.AddOpenTracing();
 						services.AddSingleton(serviceProvider =>
 						{
-							Environment.SetEnvironmentVariable("JAEGER_SERVICE_NAME", "wharehouse.producer");
-							Environment.SetEnvironmentVariable("JAEGER_AGENT_HOST", "localhost");
-							Environment.SetEnvironmentVariable("JAEGER_AGENT_PORT", "6831");
-							Environment.SetEnvironmentVariable("JAEGER_SAMPLER_TYPE", "const");
+							//Environment.SetEnvironmentVariable("JAEGER_SERVICE_NAME", "wharehouse.producer");
+							//Environment.SetEnvironmentVariable("JAEGER_AGENT_HOST", "localhost");
+							//Environment.SetEnvironmentVariable("JAEGER_AGENT_PORT", "6831");
+							//Environment.SetEnvironmentVariable("JAEGER_SAMPLER_TYPE", "const");
 
 							var loggerFactory = new LoggerFactory();
 

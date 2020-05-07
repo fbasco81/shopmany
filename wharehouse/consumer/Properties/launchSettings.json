@@ -1,7 +1,15 @@
 {
   "profiles": {
     "consumer": {
-      "commandName": "Project"
+      "commandName": "Project",
+      "environmentVariables": {
+        "RABBIT_HOST": "localhost",
+        "JAEGER_SERVICE_NAME": "wharehouse.consumer",
+        "JAEGER_AGENT_HOST": "localhost",
+        "JAEGER_AGENT_PORT": "6831",
+        "JAEGER_SAMPLER_TYPE": "const",
+        "ITEMS_URL": "http://localhost:3001/item"
+      }
     },
     "Docker": {
       "commandName": "Docker"

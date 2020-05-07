@@ -35,7 +35,7 @@ namespace producer
 		{
 			_logger.LogInformation("ProducerHostedService is connecting to rabbit mq.");
 
-			var factory = new ConnectionFactory() { HostName = "localhost" };
+			var factory = new ConnectionFactory() { HostName = Environment.GetEnvironmentVariable("RABBIT_HOST") };
 			_connection = factory.CreateConnection();
 			// create channel  
 			_channel = _connection.CreateModel();
@@ -60,7 +60,7 @@ namespace producer
 					var rnd = new Random();
 					var itemId = rnd.Next(4);
 
-					using (var scope = _tracer.BuildSpan("create-user-async").StartActive(finishSpanOnDispose: true))
+					using (var scope = _tracer.BuildSpan("item-sold").StartActive(finishSpanOnDispose: true))
 					{
 						var span = scope.Span.SetTag(Tags.SpanKind, Tags.SpanKindClient);
 
