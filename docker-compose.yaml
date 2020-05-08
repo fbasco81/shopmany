@@ -12,6 +12,8 @@ services:
             - ./items:/var/www/html
         depends_on:
             - itemdb
+        logging:
+            driver: "none"
         networks:
             - gaworkshop
             - trace-example-network
@@ -70,6 +72,10 @@ services:
             - trace-example-network
         depends_on:
             - paydb
+        environment:
+            JAEGER_SERVICE_NAME: pay
+            JAEGER_ENDPOINT: 'http://jaeger:14268/api/traces'
+            JAEGER_PROPAGATION: "jaeger"
 
     paydb:
         image: mysql:5.7.25
@@ -186,6 +192,8 @@ services:
             - JAEGER_SAMPLER_PARAM=1
             - JAEGER_REPORTER_LOG_SPANS=true
         restart: on-failure
+        logging:
+            driver: "none"
         depends_on:
             - rabbitmq
         networks:
@@ -208,6 +216,8 @@ services:
             - JAEGER_REPORTER_LOG_SPANS=true
             - ITEMS_URL=http://item/item
         restart: on-failure
+        logging:
+            driver: "none"
         depends_on:
             - rabbitmq
         networks:
@@ -221,6 +231,8 @@ services:
         ports:
             - '5672:5672'
             - '15672:15672'
+        # logging:
+        #     driver: "none"
         networks:
             - trace-example-network
         healthcheck:
@@ -242,6 +254,8 @@ services:
         ports:
             #to expose the jeager ui
             - '16686:16686'
+        logging:
+            driver: "none"
         environment:
             - 'COLLECTOR_ZIPKIN_HTTP_PORT=9411'
         networks:

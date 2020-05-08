@@ -44,9 +44,8 @@ func (h *payHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// ctx, req := httptrace.W3C(r.Context(), req)
 	// propagation.InjectHTTP(ctx, props, req.Header)
 
-	ctx := req.Context()
-	req.WithContext(ctx)
-	if span := opentracing.SpanFromContext(ctx); span != nil {
+	req.WithContext(r.Context())
+	if span := opentracing.SpanFromContext(r.Context()); span != nil {
 		opentracing.GlobalTracer().Inject(
 			span.Context(),
 			opentracing.HTTPHeaders,
