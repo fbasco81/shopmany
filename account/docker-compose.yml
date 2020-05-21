@@ -1,13 +1,13 @@
 version: '3.4'
 
 services:
-    tracingdotnetcore:
-        image: 'tracingdotnetcore:latest'
+    account:
+        image: 'account:latest'
         ports:
             - '32773:80'
         build:
             context: .
-            dockerfile: TracingDotNetCore/Dockerfile
+            dockerfile: Account/Dockerfile
         environment:
             - ASPNETCORE_ENVIRONMENT=Development
             # valid options for TracingOptions__TracerTarget : datadog , jaeger
@@ -18,7 +18,7 @@ services:
             - TracingOptions__EnableOpenTracingAutoTracing=false
 
             # jaeger
-            - JAEGER_SERVICE_NAME=TracingDotNetCore
+            - JAEGER_SERVICE_NAME=Account
             - JAEGER_AGENT_HOST=jaeger
             - JAEGER_AGENT_PORT=6831
             - JAEGER_SAMPLER_TYPE=const
@@ -48,7 +48,7 @@ services:
             - DD_AGENT_HOST=datadog
             # properties to tag traces
             - DD_ENV=playground
-            - DD_SERVICE_NAME=TracingDotNetCore
+            - DD_SERVICE_NAME=Account
 
         networks:
             - trace-example-network
