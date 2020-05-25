@@ -76,6 +76,9 @@ services:
             JAEGER_SERVICE_NAME: pay
             JAEGER_ENDPOINT: 'http://jaeger:14268/api/traces'
             JAEGER_PROPAGATION: "jaeger"
+            JAEGER_SAMPLER_TYPE: const
+            JAEGER_SAMPLER_PARAM: 1
+            RABBIT_HOST: rabbitmq
 
     paydb:
         image: mysql:5.7.25
@@ -126,7 +129,7 @@ services:
             - '32773:80'
         build:
             context: ./account
-            dockerfile: TracingDotNetCore/Dockerfile
+            dockerfile: Account/Dockerfile
         environment:
             - ASPNETCORE_ENVIRONMENT=Development
             # valid options for TracingOptions__TracerTarget : datadog , jaeger
@@ -168,7 +171,7 @@ services:
             # - DD_AGENT_HOST=datadog
             # # properties to tag traces
             # - DD_ENV=playground
-            # - DD_SERVICE_NAME=TracingDotNetCore
+            # - DD_SERVICE_NAME=Account
 
         networks:
             - trace-example-network
@@ -176,48 +179,23 @@ services:
             - jaeger
             # - datadog
     
-    wharehouse-producer:
-        image: 'producer:latest'
-        build:
-            context: ./wharehouse
-            dockerfile: producer/Dockerfile
-        environment:
-            - ASPNETCORE_ENVIRONMENT=Development
-            - RABBIT_HOST=rabbitmq
-            # jaeger
-            - JAEGER_SERVICE_NAME=wharehouse-producer
-            - JAEGER_AGENT_HOST=jaeger
-            - JAEGER_AGENT_PORT=6831
-            - JAEGER_SAMPLER_TYPE=const
-            - JAEGER_SAMPLER_PARAM=1
-            - JAEGER_REPORTER_LOG_SPANS=true
-        restart: on-failure
-        logging:
-            driver: "none"
-        depends_on:
-            - rabbitmq
-        networks:
-            - trace-example-network
-
-    wharehouse-consumer:
+    billing-consumer:
         image: 'consumer:latest'
         build:
-            context: ./wharehouse
+            context: ./billing
             dockerfile: consumer/Dockerfile
         environment:
             - ASPNETCORE_ENVIRONMENT=Development
             - RABBIT_HOST=rabbitmq
             # jaeger
-            - JAEGER_SERVICE_NAME=wharehouse-consumer
+            - JAEGER_SERVICE_NAME=billing-consumer
             - JAEGER_AGENT_HOST=jaeger
             - JAEGER_AGENT_PORT=6831
             - JAEGER_SAMPLER_TYPE=const
             - JAEGER_SAMPLER_PARAM=1
             - JAEGER_REPORTER_LOG_SPANS=true
-            - ITEMS_URL=http://item/item
+            - ACCOUNT_URL=http://account/account
         restart: on-failure
-        logging:
-            driver: "none"
         depends_on:
             - rabbitmq
         networks:

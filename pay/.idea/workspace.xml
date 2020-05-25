@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:discount" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:frontend" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:item" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:items" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:pay" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="50bc2de7-46d9-438e-9c86-f13283df7047" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../account/TracingDotNetCore.sln" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../account/TracingDotNetCore/Account.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../account/TracingDotNetCore/Config/TracingOptions.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../account/TracingDotNetCore/Controllers/AccountController.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../account/TracingDotNetCore/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../account/TracingDotNetCore/Person.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../account/TracingDotNetCore/Program.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../account/TracingDotNetCore/Startup.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../account/TracingDotNetCore/TracingDotNetCore.csproj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../account/TracingDotNetCore/appsettings.Development.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../account/TracingDotNetCore/appsettings.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../account/docker-compose.dcproj" beforeDir="false" afterPath="$PROJECT_DIR$/../account/docker-compose.dcproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../account/docker-compose.override.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../account/docker-compose.override.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../account/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../account/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../docker-compose.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../docker-compose.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pay/Application.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pay/Application.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wharehouse/.dockerignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wharehouse/consumer/ConsumerHostedService.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wharehouse/consumer/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wharehouse/consumer/Program.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wharehouse/consumer/Properties/launchSettings.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wharehouse/consumer/ShopItem.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wharehouse/consumer/TracingExtension.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wharehouse/consumer/WharehouseItem.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wharehouse/consumer/consumer.csproj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wharehouse/consumer/consumer.csproj.user" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wharehouse/docker-compose.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wharehouse/producer/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wharehouse/producer/Item.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wharehouse/producer/ProducerHostedService.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wharehouse/producer/Program.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wharehouse/producer/Properties/launchSettings.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wharehouse/producer/producer.csproj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wharehouse/producer/producer.csproj.user" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wharehouse/wharehouse.sln" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectId" id="1bxQup84tkIpmSBH5A6X8LQBkz6" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="Downloaded.Files.Path.Enabled" value="false" />
+    <property name="Git.Branch.Popup.ShowAllRemotes" value="true" />
+    <property name="Repository.Attach.Annotations" value="false" />
+    <property name="Repository.Attach.JavaDocs" value="false" />
+    <property name="Repository.Attach.Sources" value="false" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="findjar.last.used.dir" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.rabbitmq" />
+    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.38275862" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.project.gradle" />
+    <property name="show.unlinked.gradle.project.popup" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="pay" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.Application">
+    <configuration name="Application" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="pay.Application" />
+      <module name="pay.main" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="pay.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Tests in 'pay'" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list />
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <GradleScriptDebugEnabled>false</GradleScriptDebugEnabled>
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Application" />
+        <item itemvalue="Gradle.Tests in 'pay'" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="50bc2de7-46d9-438e-9c86-f13283df7047" name="Default Changelist" comment="" />
+      <created>1589571489595</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1589571489595</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="654" y="275" key="#Notifications" timestamp="1589571996281">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="654" y="275" key="#Notifications/0.0.1536.824@0.0.1536.824" timestamp="1589571996281" />
+    <state x="249" y="0" key="#Project_Structure" timestamp="1589745095668">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="249" y="0" key="#Project_Structure/0.0.1536.824@0.0.1536.824" timestamp="1589745095668" />
+    <state x="223" y="67" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1589572269462">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="223" y="67" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1589572269462" />
+    <state x="122" y="50" key="DiffContextDialog" timestamp="1589640027029">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="122" y="50" key="DiffContextDialog/0.0.1280.680@0.0.1280.680" timestamp="1589640027029" />
+    <state x="198" y="84" key="FileChooserDialogImpl" timestamp="1589745292019">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="165" y="69" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1589644179667" />
+    <state x="198" y="84" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1589745292019" />
+    <state width="1210" height="271" key="GridCell.Tab.0.bottom" timestamp="1589921667942">
+      <screen x="1920" y="-403" width="1920" height="1040" />
+    </state>
+    <state width="1210" height="271" key="GridCell.Tab.0.bottom/0.0.1536.824/1920.-403.1920.1040@1920.-403.1920.1040" timestamp="1589921667942" />
+    <state width="991" height="210" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1589572436715" />
+    <state width="1210" height="271" key="GridCell.Tab.0.center" timestamp="1589921667941">
+      <screen x="1920" y="-403" width="1920" height="1040" />
+    </state>
+    <state width="1210" height="271" key="GridCell.Tab.0.center/0.0.1536.824/1920.-403.1920.1040@1920.-403.1920.1040" timestamp="1589921667941" />
+    <state width="991" height="210" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1589572436715" />
+    <state width="1210" height="271" key="GridCell.Tab.0.left" timestamp="1589921667941">
+      <screen x="1920" y="-403" width="1920" height="1040" />
+    </state>
+    <state width="1210" height="271" key="GridCell.Tab.0.left/0.0.1536.824/1920.-403.1920.1040@1920.-403.1920.1040" timestamp="1589921667941" />
+    <state width="991" height="210" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1589572436715" />
+    <state width="1210" height="271" key="GridCell.Tab.0.right" timestamp="1589921667941">
+      <screen x="1920" y="-403" width="1920" height="1040" />
+    </state>
+    <state width="1210" height="271" key="GridCell.Tab.0.right/0.0.1536.824/1920.-403.1920.1040@1920.-403.1920.1040" timestamp="1589921667941" />
+    <state width="991" height="210" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1589572436715" />
+    <state x="399" y="43" key="RollbackChangesDialog" timestamp="1589640031266">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="399" y="43" key="RollbackChangesDialog/0.0.1280.680@0.0.1280.680" timestamp="1589640031266" />
+    <state x="2266" y="-403" key="SettingsEditor" timestamp="1589917976361">
+      <screen x="1920" y="-403" width="1920" height="1040" />
+    </state>
+    <state x="231" y="0" key="SettingsEditor/0.0.1280.680@0.0.1280.680" timestamp="1589644217073" />
+    <state x="2266" y="-403" key="SettingsEditor/0.0.1536.824/1920.-403.1920.1040@1920.-403.1920.1040" timestamp="1589917976361" />
+    <state x="277" y="0" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1589745293615" />
+    <state x="582" y="281" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD" timestamp="1589745262699">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="485" y="232" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD/0.0.1280.680@0.0.1280.680" timestamp="1589644170388" />
+    <state x="582" y="281" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD/0.0.1536.824@0.0.1536.824" timestamp="1589745262699" />
+    <state x="1920" y="-403" width="882" height="1040" key="find.popup" timestamp="1589918049066">
+      <screen x="1920" y="-403" width="1920" height="1040" />
+    </state>
+    <state x="0" y="0" width="587" height="680" key="find.popup/0.0.1280.680@0.0.1280.680" timestamp="1589640321008" />
+    <state x="1920" y="-403" width="882" height="1040" key="find.popup/0.0.1536.824/1920.-403.1920.1040@1920.-403.1920.1040" timestamp="1589918049066" />
+    <state x="0" y="0" width="705" height="824" key="find.popup/0.0.1536.824@0.0.1536.824" timestamp="1589745055238" />
+  </component>
+</project>

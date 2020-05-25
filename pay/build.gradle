@@ -33,6 +33,9 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-web"){ exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'}
     compile('org.springframework.boot:spring-boot-starter-log4j2')
     compile('io.jaegertracing:jaeger-client:0.32.0')
+    compile('com.rabbitmq:amqp-client')
+    compile('com.google.code.gson:gson:2.6.2')
+    compile group: 'io.opentracing.contrib', name: 'opentracing-rabbitmq-client', version: '0.0.6'
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
