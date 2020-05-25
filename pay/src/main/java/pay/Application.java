@@ -17,6 +17,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,18 +46,19 @@ public class Application {
     }
 
     @PostMapping("/pay")
-    public ResponseEntity<?> home2(@RequestHeader Map<String, String> headers, @RequestBody PayRequest payRequest) throws IOException {
+    public ResponseEntity<?> home2(@RequestHeader Map<String, String> headers, @RequestBody PayRequest payRequest, @RequestAttribute("span") Span requestSpan) throws IOException {
         PayEntity payEntity = new PayEntity(payRequest.getTot_price(), payRequest.getCustomer_id());
-        payRepository.save(payEntity);
 
+        // save payment
+        payRepository.save(payEntity);
         logger.info("PAY: entity saved");
 
+        // prepare connection to rabbit
         ConnectionFactory factory = new ConnectionFactory();
-
+        factory.setHost(System. getenv("RABBIT_HOST"));
         logger.info("PAY: host:" + System. getenv("RABBIT_HOST"));
 
-        factory.setHost(System. getenv("RABBIT_HOST"));
-
+        // open connection
         try (Connection connection = factory.newConnection();
              Channel channel = connection.createChannel()) {
 
@@ -75,49 +78,27 @@ public class Application {
             // Instantiate tracer
             Tracer tracer = Configuration.fromEnv().getTracer();
 
-// Optionally register tracer with GlobalTracer
-           // GlobalTracer.register(tracer);
-
-// Decorate RabbitMQ Channel with TracingChannel
+            // Decorate RabbitMQ Channel with TracingChannel
             TracingChannel tracingChannel = new TracingChannel(channel, tracer);
 
-            Tracer.SpanBuilder spanBuilder;
-            try {
-                SpanContext parentSpan = tracer.extract(Format.Builtin.HTTP_HEADERS, new TextMapExtractAdapter(headers));
-                if (parentSpan == null) {
-                    spanBuilder = tracer.buildSpan("pay");
-                    logger.info("PAY: parent span null");
-                } else {
-                    spanBuilder = tracer.buildSpan("pay").asChildOf(parentSpan);
-                    logger.info("PAY: parent span:" + gson.toJson(parentSpan));
-                }
-            } catch (IllegalArgumentException e) {
-                spanBuilder = tracer.buildSpan("pay");
-            }
-            Scope scope = spanBuilder.withTag(Tags.SPAN_KIND.getKey(), Tags.SPAN_KIND_SERVER).startActive(true);
+            // create span as child of the one in the current request
+            Tracer.SpanBuilder spanBuilder = tracer.buildSpan("pay").asChildOf(requestSpan);;
+            Span childSpan = spanBuilder.withTag(Tags.SPAN_KIND.getKey(), Tags.SPAN_KIND_SERVER).start();
             Map<String, String> dictionary = new HashMap<String, String>();
-            tracer.inject(scope.span().context(), Format.Builtin.TEXT_MAP, new TextMapInjectAdapter(dictionary));
-
-
-         /*   Scope scope = tracer.buildSpan("item-sold").asChildOf().startActive(true);
-            Span span = scope.span().setTag(String.valueOf(Tags.SPAN_KIND), Tags.SPAN_KIND_CLIENT);
-            Map<String, String> dictionary = new HashMap<String, String>();
-            tracer.inject(span.context(), Format.Builtin.TEXT_MAP, new TextMapInjectAdapter(dictionary));
-            span.finish();
-          */
-
-            logger.info("PAY: dictionary message header:" + gson.toJson(dictionary));
+            tracer.inject(childSpan.context(), Format.Builtin.TEXT_MAP, new TextMapInjectAdapter(dictionary));
 
             // Build message properties with tracing keys
             Map messageProps = new HashMap();
             messageProps.put("tracingKeys", dictionary);
-
             AMQP.BasicProperties.Builder basicProperties = new AMQP.BasicProperties.Builder();
             basicProperties.headers(messageProps);
 
+            // send message
             tracingChannel.basicPublish("", QUEUE_NAME, basicProperties.build(), body.getBytes());
 
+            // complete span
             logger.info("PAY: message sent");
+            childSpan.finish();
 
         } catch (TimeoutException e) {
             logger.info("PAY: exception: " + e.toString() );
