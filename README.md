@@ -19,7 +19,8 @@ Those APIs are a proxy to the other services part of `shopmany`.
 
 -   Item
 -   Discount
--   Pay
+-   Pay (which send a message to an invoice service that process the order)
+-   Account (which use https://api.namefake.com/ as a provider of fake users)
 
 ```
 +------------------+
@@ -42,14 +43,24 @@ Those APIs are a proxy to the other services part of `shopmany`.
          |                   +-------------------+
          |
          |
-         |                   +-------------------+
-         |                   |                   |
-         +------------------->   Pay             |
-                             |                   |
-                             +-------------------+
-```
+         |                   +-------------------+             +----------------+             +-----------------+
+         |                   |                   |             |                |             |                 |
+         +------------------->   Pay             |------------->    RabbitMQ    |------------->     Invoice     |
+         |                   |                   |             |                |             |                 |
+         |                   +-------------------+             +----------------+             +-----------------+
+         |                                                                                              |
+         |                             +----------------------------------------------------------------+
+         |                             |
+         |                   +-------------------+            +---------------------------------+
+         |                   |                   |            |                                 |
+         +------------------->   Account         |------------>     https://api.namefake.com/   |
+                             |                   |            |                                 |
+                             +-------------------+            +---------------------------------+
 
-Additionally, the front end consumes a .net core API which provide the user account information, accessing directly to the API and not using any proxy layer.
+
+
+
+```
 
 This chapter is a per service zoom on the architecture
 
@@ -80,6 +91,7 @@ Discount uses mongodn as backend and it is an application in NodeJS capable of
 giving back the discount % that should be applied to a specific item.
 
 Prior to run compose, get the dependencies
+
 ```
 npm install
 ```
@@ -125,6 +137,14 @@ Check it out
 ```
 $ curl http://localhost:32773/account
 []
+```
+
+## Billing-consumer
+
+Billing-consumer is a .net Core 3 background service that consume a queue from rabbit and call account service to fetch user information
+
+```
+docker-compose up billing-consumer
 ```
 
 ## Frontend
